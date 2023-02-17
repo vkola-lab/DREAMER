@@ -44,7 +44,7 @@ class ClassOverlap:
                kNN_otherClass = self.getKnnOtherClass(data_num, data_class, className, i)
                if kNN_otherClass > self.tetha:
                    kNN_ctr = kNN_ctr + 1
-        print('num of other class for class ',className,' is: ', kNN_ctr)
+        
         return kNN_ctr
         
                 
@@ -69,7 +69,7 @@ class ClassOverlap:
         numOfClasses = len(classNames_list)
         totalSamples = 0
         total_RValue = 0
-        print('Class names = ', classNames_list)
+       
         
         for i in range(numOfClasses):
             samples = self.getNumofSamples(data, classNames_list[i])
