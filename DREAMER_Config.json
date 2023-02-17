@@ -1,12 +1,14 @@
 {
     "search_space": {
-      "subtables": 3,
+      "subtables": 10,
 	  "cores": 2
     },
+    
     "data_settings": {
-      "file_path": "ADNI.csv",
-	  "target_column": "DX_bl"
+      "file_path": "iris.csv",
+	  "target_column": "target"
     },
+    
     "free_params": {
       "rows_exclusion_ratio": 0.2,
       "columns_exclusion_ratio": 0.5,

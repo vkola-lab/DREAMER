@@ -112,19 +112,18 @@ runsArray = [[DataReadinessRecord() for k in range(d)] for p in range(R)]
 #new object of data readiness recoord for master table
 readinessRecord_master = DataReadinessRecord() 
 
-df_master = pd.read_csv(file_path) #original data frame including nan elements and DX_bl
+df_master = pd.read_csv(file_path) #original data frame including nan elements and target column
 
 fileNameLength = len(file_path)
 fileName = file_path[0:fileNameLength-4]    #file name without .csv extension
 dfZero_fileName = fileName+'_Zero.csv'
 
 createDF_ZeroFile(df_master, dfZero_fileName)
-df_orig = pd.read_csv(dfZero_fileName)
 
 print('ADNI zero file was created.')
 dfZero = pd.read_csv(dfZero_fileName)
 del dfZero[target_column]
-df = pd.read_csv(file_path) #data frame including nan elements without DX_bl
+df = pd.read_csv(file_path) #data frame including nan elements without target column
 del df[target_column]
 dfRows = len(dfZero.index) #number of rows in data frame
 dfCols = len(dfZero.columns) #number of columns in data frame
@@ -138,7 +137,7 @@ def getMat_df(dfRandRows):
     randRows = len(indexes)
     target = np.zeros(randRows, dtype=object)
     for i in range(len(indexes)):
-        target[i] = df_orig.xs(indexes[i])[target_column]
+        target[i] = df_master.xs(indexes[i])[target_column]
     
     new_df = dfRandRows.copy()
     
@@ -163,7 +162,7 @@ def getClassifyAccuracy(df_mat):
     
     #SGD classifier
     clf_SGD = SGDClassifier(shuffle=True, loss='log')
-    scores_SGD = cross_val_score(clf_SGD, X, y, cv=10)
+    scores_SGD = cross_val_score(clf_SGD, X, y, scoring='accuracy', cv=10)
     accuracy_SGD = round(scores_SGD.mean(), precision)
     
     accuracy_avg = (accuracy_RF+accuracy_SGD)/2
@@ -173,7 +172,7 @@ def getClassifyAccuracy(df_mat):
 
 def getClusteringAccuracy(df_mat):
     cols = len(df_mat[0])
-    X = df_mat[:,0:(cols-1)] #excluding the last column 'DX_bl'
+    X = df_mat[:,0:(cols-1)] #excluding the last column target
     
     #Agglomerative
     model_Agg = AgglomerativeClustering()
