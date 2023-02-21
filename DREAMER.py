@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Feb 1, 2023
+Created on Feb 20, 2023
 
 @author: Meysam Ahangaran
 """
@@ -122,6 +122,7 @@ createDF_ZeroFile(df_master, dfZero_fileName)
 
 print('ADNI zero file was created.')
 dfZero = pd.read_csv(dfZero_fileName)
+dfZero_orig = dfZero.copy()
 del dfZero[target_column]
 df = pd.read_csv(file_path) #data frame including nan elements without target column
 del df[target_column]
@@ -135,16 +136,16 @@ minNumOfCols = math.floor(dfCols - (dfCols * CER))  #minimum number of columns i
 def getMat_df(dfRandRows):
     indexes = dfRandRows.index
     randRows = len(indexes)
-    target = np.zeros(randRows, dtype=object)
+    target = np.zeros(randRows, dtype=str)
     for i in range(len(indexes)):
-        target[i] = df_master.xs(indexes[i])[target_column]
+        target[i] = dfZero_orig.xs(indexes[i])[target_column]
     
     new_df = dfRandRows.copy()
     
     new_df[target_column] = target
     dfRows_new = len(new_df.index) #number of rows in new data frame
     dfCols_new = len(new_df.columns) #number of columns in new data frame
-    df_mat = np.zeros((dfRows_new, dfCols_new), dtype=object) 
+    df_mat = np.zeros((dfRows_new, dfCols_new), dtype=str) 
     df_mat = new_df.to_numpy()
     
     return df_mat

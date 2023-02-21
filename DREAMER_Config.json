@@ -1,12 +1,12 @@
 {
     "search_space": {
-      "subtables": 10,
+      "subtables": 3,
 	  "cores": 2
     },
     
     "data_settings": {
-      "file_path": "iris.csv",
-	  "target_column": "target"
+      "file_path": "FHS.csv",
+	  "target_column": "DCTClassification"
     },
     
     "free_params": {
