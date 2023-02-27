@@ -40,6 +40,8 @@ def getAvgPC(colsArr, df):
     for i in range(numOfPairs):
         currSubset = subsets[i]
         pearson_coef, p_value = stats.pearsonr(df[currSubset[0]], df[currSubset[1]])
+        if math.isnan(pearson_coef):
+            numOfPairs = numOfPairs - 1
         pc = pc + abs(pearson_coef)
     
     return round(pc/numOfPairs, precision)
@@ -51,6 +53,8 @@ def getAvgSpearmanCorr(colsArr, df):
     for i in range(numOfPairs):
         currSubset = subsets[i]
         spearman_coef, p_value = stats.spearmanr(df[currSubset[0]], df[currSubset[1]])
+        if math.isnan(spearman_coef):
+            numOfPairs = numOfPairs - 1
         spearmanCorr = spearmanCorr + abs(spearman_coef)
     
     return round(spearmanCorr/numOfPairs, precision)
