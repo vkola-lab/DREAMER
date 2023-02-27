@@ -15,8 +15,8 @@ class DataQuality:
 class DataReadinessRecord:
         
     numOfDataQualityMeasures = 4 #number of data quality measures
-    featuresList = []   # subset of columns name from ADNI table
-    rowsIndexes = []    #subset of rows indexes from ADNI table
+    featuresList = []   # subset of columns name from master dataset
+    rowsIndexes = []    #subset of rows indexes from master dataset
     nullRatioMeasure = 0    # 1 - (null ratio)
     avgPCMeasure = 0    # average Pearson Correlation (1-PC)
     avgSpearmanCorr = 0 #average Spearman Correlation (1-SpearmanCorr)

@@ -5,8 +5,8 @@
     },
     
     "data_settings": {
-      "file_path": "FHS.csv",
-	  "target_column": "DCTClassification"
+      "file_path": "./Data/ADNI/ADNI-Static.csv", 
+	  "target_column": "DX_bl"
     },
     
     "free_params": {

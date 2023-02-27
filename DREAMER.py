@@ -81,6 +81,7 @@ def createDF_ZeroFile(df, fileName):
     df.to_csv(fileName, index = False, na_rep='0')    
 ########################################################################################
 #json config file data
+print('DREAMER started!')
 print('Read json configuration.')
 config = {}
 with open("DREAMER_Config.json", 'r') as config_file:
@@ -120,7 +121,7 @@ dfZero_fileName = fileName+'_Zero.csv'
 
 createDF_ZeroFile(df_master, dfZero_fileName)
 
-print('ADNI zero file was created.')
+print('Zero dataset file was created.')
 dfZero = pd.read_csv(dfZero_fileName)
 dfZero_orig = dfZero.copy()
 del dfZero[target_column]
@@ -201,7 +202,6 @@ def getClusteringAccuracy(df_mat):
 
 def getRandomSubtablesWeights(coreIdx):
     
-        print('Creating random sub-tables.')
         dataReadinessArray = [DataReadinessRecord() for k in range(d)]  #array of sub-tables
         for j in tqdm(range(d)):  #create a random sub-table
            
@@ -321,7 +321,7 @@ def printMasterTableFile():
     
 #print all sub-tables of all runs into separate files
 def printSubtableFilesRuns():
-    print('Export DREAMER results in files.')
+    print('Exporting DREAMER results into output files ...')
     runTable = np.zeros((d+1,11), dtype=object) #table for each run (sub-tables of the run)
     runTable[0][0] = "Rows"
     runTable[0][1] = "Columns"
@@ -601,7 +601,7 @@ def getMaxQualityIdx(runIdx):
     
 #Train weights of data quality measures
 def learnWeights():
-    print('Learning weights of data quality measures.')
+    print('Learning weights of data quality measures ...')
     weightsTable = np.zeros((R+1,numOfQualityMeasures), dtype=object) #weights for each run (sub-tables of the run)
     weightsTable[0][0] = "PC"
     weightsTable[0][1] = "Spearman"
@@ -678,11 +678,13 @@ def runDREAMER():
 if __name__ == '__main__':
     
     start = timeit.default_timer()  #Start timer
+    print('Creating random sub-tables ...')
     runDREAMER()
     stop = timeit.default_timer()   #Stop timer
     file = open("./Output/Runs/Time.txt", 'w')
     duration = (stop - start) / 60
     duration = round(duration,2)
+    print('DREAMER finished successfully.')
     file.write('Running time (minutes): ')
     file.write(str(duration))
     file.close()
