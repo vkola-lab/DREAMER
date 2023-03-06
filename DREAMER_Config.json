@@ -1,12 +1,13 @@
 {
     "search_space": {
-      "subtables": 3,
-	  "cores": 2
+      "subtables": 1000,
+	  "cores": 4
     },
     
     "data_settings": {
-      "file_path": "./Data/ADNI/ADNI-Static.csv", 
-	  "target_column": "DX_bl"
+      "file_name": "ADNI.csv", 
+	  "target_column": "DX_bl",
+	  "folder_name": "user1"
     },
     
     "free_params": {
