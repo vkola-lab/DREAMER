@@ -126,6 +126,7 @@ classification_weight = free_params['classification_weight']
 RER = free_params['rows_exclusion_ratio']   #rows exclusion ratio (excluded rows < RER)
 CER = free_params['columns_exclusion_ratio']   #columns exclusion ratio (excluded columns < CER)
 precision = free_params['precision'] #precision of floating numbers
+
 if R == 0:
    R = cpu_count() #get all CPU cores
 
@@ -145,7 +146,6 @@ df_master = pd.read_csv(file_path) #original data frame including nan elements a
 fileNameLength = len(file_path)
 fileName = file_path[0:fileNameLength-4]    #file name without .csv extension
 dfZero_fileName = fileName+'_Zero.csv'
-# dfZero_filePath = "./"+folder_name+"/"+dataFolder+"/"+dfZero_fileName
 
 createDF_ZeroFile(df_master, dfZero_fileName)
 
@@ -227,7 +227,6 @@ def getClusteringAccuracy(df_mat):
     
     
 #create random sub-tables for training weights of qaulity measures
-
 def getRandomSubtablesWeights(coreIdx):
     
         dataReadinessArray = [DataReadinessRecord() for k in range(d)]  #array of sub-tables
@@ -344,7 +343,6 @@ def printMasterTableFile():
     masterTable[1][10] = totalQuality
     
     path = masterTableDetails
-    # path = "./Output/Runs/MasterTableDetails.csv"
     np.savetxt(path, masterTable, fmt="%s", delimiter=",")
     
     
@@ -408,7 +406,6 @@ def printSubtableFilesRuns():
 
         currRun = i+1
         path = runsPath+str(currRun)+".csv"
-        # path = "./Output/Runs/Run"+str(currRun)+".csv"
         np.savetxt(path, runTable, fmt="%s", delimiter=",")
         
         #find best sub-table
@@ -441,7 +438,6 @@ def printSubtableFilesRuns():
  
     bestTablePath = runBestSubtablesPath
     np.savetxt(bestTablePath, totalRunTable, fmt="%s", delimiter=",")
-    # np.savetxt("./Output/Runs/Run_BestSubtables.csv", totalRunTable, fmt="%s", delimiter=",")
     bestSubtable = getBestSubtable() #best subtable among all runs
     printBestSubtableToFile(bestSubtable)
     
@@ -486,13 +482,11 @@ def printFileRunsWeights():
             runTable[j+1][9] = accuracy_avg
         currRun = i+1
         path = DR_space_path+str(currRun)+".csv"  #data readiness space of current run
-        # path = "./Output/Runs/Weights/Run_Weights"+str(currRun)+".csv"
         np.savetxt(path, runTable, fmt="%s", delimiter=",")
             
 #Print best sub-table details into a file
 def printBestSubtableToFile(bestSubtable):
     file = open(cleanDataDetails, 'w')
-    # file = open("./Output/Runs/BestSubtable.txt", 'w')
     columns = bestSubtable.featuresList
     rows = bestSubtable.rowsIndexes
     rowsBest = len(rows)
@@ -563,7 +557,6 @@ def printBestSubtableToFile(bestSubtable):
     best_df_cols = df_master.loc[:, columnsTarget]
     best_df_rows = best_df_cols.loc[rows, :]
     path_CleanData = cleanDataPath
-    # path_CleanData = "./Output/Runs/CleanData.csv"
     best_df_rows.to_csv(path_CleanData)
     
     #Print best subtable details in a CSV file
@@ -604,12 +597,10 @@ def printBestSubtableToFile(bestSubtable):
     bestTable[1][9] = avgAccuracy
     bestTable[1][10] = totalQuality
     path = cleanDataStatisctics
-    # path = "./Output/Runs/BestTableDetails.csv"
     np.savetxt(path, bestTable, fmt="%s", delimiter=",")
     
 #get best sub-table with max total quality    
 def getBestSubtable():
-    # maxQualityIdx = -1
     maxQuality = 0
     bestSubtable = DataReadinessRecord()
     for i in range(R):
@@ -617,7 +608,6 @@ def getBestSubtable():
             readinessRecord = runsArray[i][j]
             if readinessRecord.getTotalQuality(precision, AvgWeightsFile) > maxQuality:
                 maxQuality = readinessRecord.getTotalQuality(precision, AvgWeightsFile)
-                # maxQualityIdx = i
                 bestSubtable = readinessRecord
     
     return bestSubtable
@@ -644,7 +634,6 @@ def learnWeights():
     weightsTable[0][3] = "Outliers"
     weightsTable[0][4] = "Class Overlap"
     file = weightsFile
-    # file = "./Output/Runs/Weights/Weights.csv"
     
     weightsAvgTable = np.zeros((2,numOfQualityMeasures), dtype=object) #average weights for all runs 
     weightsAvgTable[0][0] = "PC"
@@ -654,9 +643,7 @@ def learnWeights():
     weightsAvgTable[0][4] = "Class Overlap"
     
     fileAvg = AvgWeightsFile
-    # fileAvg = "./Output/Runs/Weights/Average_Weights.csv"
     pathOrig = DR_space_path
-    # pathOrig = "./Output/Runs/Weights/Run_Weights"
     
     for i in range(R):
             path = pathOrig + str(i+1) + ".csv"
@@ -718,10 +705,9 @@ if __name__ == '__main__':
     runDREAMER()
     stop = timeit.default_timer()   #Stop timer
     file = open(timeFile, 'w')
-    # file = open("./Output/Runs/Time.txt", 'w')
     duration = (stop - start) / 60
     duration = round(duration,2)
-    print('DREAMER finished successfully.')
+    print('DREAMER process was finished successfully.')
     file.write('Running time (minutes): ')
     file.write(str(duration))
     file.close()
