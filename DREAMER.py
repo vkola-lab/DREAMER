@@ -177,19 +177,23 @@ class DREAMER():
         cols = len(df_mat[0])
         X = df_mat[:,0:(cols-1)]
         y = df_mat[:, (cols-1)]
-        
+        accuracy_RF = accuracy_SGD = 0
+        try:
         #RF classifier
-        clf_RF = RandomForestClassifier(n_estimators=20)
-        scores_RF = cross_val_score(clf_RF, X, y, scoring='accuracy', cv=10)
-        accuracy_RF = round(scores_RF.mean(), self.precision)
-        
-        #SGD classifier
-        clf_SGD = SGDClassifier(shuffle=True, loss='log')
-        scores_SGD = cross_val_score(clf_SGD, X, y, scoring='accuracy', cv=10)
-        accuracy_SGD = round(scores_SGD.mean(), self.precision)
-        
+            clf_RF = RandomForestClassifier(n_estimators=20)
+            scores_RF = cross_val_score(clf_RF, X, y, scoring='accuracy', cv=10)
+            accuracy_RF = round(scores_RF.mean(), self.precision)
+        except ValueError:
+            print('Value error for RF classification!')    
+        try:
+            #SGD classifier
+            clf_SGD = SGDClassifier(shuffle=True, loss='log')
+            scores_SGD = cross_val_score(clf_SGD, X, y, scoring='accuracy', cv=10)
+            accuracy_SGD = round(scores_SGD.mean(), self.precision)
+        except ValueError:
+            print('Value error for SGD classification!')    
+            
         accuracy_avg = (accuracy_RF+accuracy_SGD)/2
-        
         return np.round(accuracy_avg, self.precision)
     
     
