@@ -30,9 +30,10 @@ class DataReadinessRecord:
     def __init__(self):
         self
     
-    def getTotalQuality(self, precision):
+    def getTotalQuality(self, precision, avgWeightsFilePath):
         
-        df = pd.read_csv("./Output/Runs/Weights/Average_Weights.csv")
+        df = pd.read_csv(avgWeightsFilePath)
+        # df = pd.read_csv("./Output/Runs/Weights/Average_Weights.csv")
         indexes = df.index
         columns = len(df.columns)
         weights = np.zeros(columns, dtype=object)

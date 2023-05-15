@@ -17,7 +17,7 @@ class Outlier:
         #Takes two parameters: dataframe & variable of interest as string
         columns = df.columns
         med = np.median(df, axis = 0)
-        mad = np.abs(stats.median_absolute_deviation(df))
+        mad = np.abs(stats.median_abs_deviation(df))
         threshold = 3
         outlier = []
         index=0

@@ -28,6 +28,8 @@ from tqdm import tqdm
 import timeit
 from sklearn.linear_model import SGDClassifier
 import json
+import os
+import shutil
 
 class DREAMER():
     
@@ -53,19 +55,43 @@ class DREAMER():
     file_name = data_settings['file_name']   #main CSV file including empty cells
     target_column = data_settings['target_column']  #target column of the dataset for supervised learning
     folder_name = data_settings['folder_name']  #name of unique folder of user
-    file_path = "./"+folder_name+"/"+dataFolder+"/"+file_name   #dataset file path
+    fileNameLength = len(file_name)
+    fileName_no_extension = file_name[0:fileNameLength-4]    #file name without .csv extension
+    main_path = "./"+folder_name+"/"+fileName_no_extension #main path for current dataset
+    data_path = main_path+"/"+dataFolder
+    file_path = data_path+"/"+file_name   #dataset file path
+    filePathLength = len(file_path)
+    filePath_no_extension = file_path[0:filePathLength-4]    #file path without .csv extension
     
-    runBestSubtablesPath = "./"+folder_name+"/"+outputFolder+"/"+runsFolder+"/Run_BestSubtables.csv"  #path of best subtables of runs
-    runsPath = "./"+folder_name+"/"+outputFolder+"/"+runsFolder+"/Run"  #path of runs files
-    cleanDataPath = "./"+folder_name+"/"+outputFolder+"/CleanData.csv"  #path of resulted clean data
-    masterTableDetails = "./"+folder_name+"/"+outputFolder+"/MasterTableStatistics.csv"  #path of master table details
-    cleanDataDetails = "./"+folder_name+"/"+outputFolder+"/CleanDataDetails.txt"  #path of clean data details
-    cleanDataStatisctics = "./"+folder_name+"/"+outputFolder+"/CleanDataStatistics.csv"  #path of clean data statistics
-    weightsFile =  "./"+folder_name+"/"+outputFolder+"/"+weightsFolder+"/Weights.csv"  #weights of data quality measures for all run
-    AvgWeightsFile =  "./"+folder_name+"/"+outputFolder+"/"+weightsFolder+"/Average_Weights.csv"  #average weights of data quality measures
-    DR_space_path = "./"+folder_name+"/"+outputFolder+"/"+weightsFolder+"/DR_Space_Run"  #path of data readiness space files to learn weights
-    timeFile = "./"+folder_name+"/"+outputFolder+"/Time.txt"  #file contains amount of spending time for DREAMER process (minutes)
     
+    output_path = main_path+"/"+outputFolder #path of output files
+    runs_folder_path = output_path+"/"+runsFolder #output folder path
+    runs_path = runs_folder_path+"/Run"  #path of runs files
+    weight_path = output_path+"/"+weightsFolder #path of weight files
+    runBestSubtablesPath = runs_folder_path+"/Run_BestSubtables.csv"  #path of best subtables of runs
+    cleanDataPath = output_path+"/CleanData.csv"  #path of resulted clean data
+    masterTableDetails = output_path+"/MasterTableStatistics.csv"  #path of master table details
+    cleanDataDetails = output_path+"/CleanDataDetails.txt"  #path of clean data details
+    cleanDataStatisctics = output_path+"/CleanDataStatistics.csv"  #path of clean data statistics
+    weightsFile =  output_path+"/"+weightsFolder+"/Weights.csv"  #weights of data quality measures for all run
+    AvgWeightsFile =  output_path+"/"+weightsFolder+"/Average_Weights.csv"  #average weights of data quality measures
+    DR_space_path = output_path+"/"+weightsFolder+"/DR_Space_Run"  #path of data readiness space files to learn weights
+    timeFile = output_path+"/Time.txt"  #file contains amount of spending time for DREAMER process (minutes)
+    
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    if not os.path.exists(runs_folder_path):
+        os.makedirs(runs_folder_path)
+    if not os.path.exists(weight_path):
+        os.makedirs(weight_path)
+        
+    shutil.copy("./"+file_name, data_path)
+
+        
     clustering_weight = free_params['clustering_weight']
     classification_weight = free_params['classification_weight']
     RER = free_params['rows_exclusion_ratio']   #rows exclusion ratio (excluded rows < RER)
@@ -74,7 +100,7 @@ class DREAMER():
 
     if R == 0:
        R = cpu_count() #get all CPU cores
-    
+       
     numOfQualityMeasures = 5    #number of data quality measures
     # 2-D matrix of runs with dimension [Rxd]
     runsArray = [[DataReadinessRecord()] for p in range(R)]
@@ -83,9 +109,7 @@ class DREAMER():
     
     df_master = pd.read_csv(file_path) #original data frame including nan elements and target column
     
-    fileNameLength = len(file_path)
-    fileName = file_path[0:fileNameLength-4]    #file name without .csv extension
-    dfZero_fileName = fileName+'_Zero.csv'
+    dfZero_fileName = filePath_no_extension+'_Zero.csv'
     df_master.to_csv(dfZero_fileName, index = False, na_rep='0')  #create zerofile
     dfZero = pd.read_csv(dfZero_fileName)
     dfZero_orig = dfZero.copy()
@@ -200,24 +224,30 @@ class DREAMER():
     def getClusteringAccuracy(self, df_mat):
         cols = len(df_mat[0])
         X = df_mat[:,0:(cols-1)] #excluding the last column target
+        score_Agg = score_KM = 0
+        try:
+            #Agglomerative
+            model_Agg = AgglomerativeClustering()
+            yhat_Agg = model_Agg.fit_predict(X)
+            clusters_Agg = unique(yhat_Agg)
+            labels_Agg = model_Agg.labels_
+            score_Agg = metrics.silhouette_score(X, labels_Agg, metric='euclidean')
+            if score_Agg < 0:
+                score_Agg = 0
+        except ValueError:
+            print('Value error for Agglomerative clustering!')    
         
-        #Agglomerative
-        model_Agg = AgglomerativeClustering()
-        yhat_Agg = model_Agg.fit_predict(X)
-        clusters_Agg = unique(yhat_Agg)
-        labels_Agg = model_Agg.labels_
-        score_Agg = metrics.silhouette_score(X, labels_Agg, metric='euclidean')
-        if score_Agg < 0:
-            score_Agg = 0
-        
+        try:    
         #K-Means
-        model_KM = KMeans()    
-        yhat_KM = model_KM.fit_predict(X)    
-        clusters_KM = unique(yhat_KM)    
-        labels_KM = model_KM.labels_    
-        score_KM = metrics.silhouette_score(X, labels_KM, metric='euclidean')
-        if score_KM < 0:
-            score_KM = 0
+            model_KM = KMeans()    
+            yhat_KM = model_KM.fit_predict(X)    
+            clusters_KM = unique(yhat_KM)    
+            labels_KM = model_KM.labels_    
+            score_KM = metrics.silhouette_score(X, labels_KM, metric='euclidean')
+            if score_KM < 0:
+                score_KM = 0
+        except ValueError:
+            print('Value error for K-Means clustering!')    
             
         score_avg = (score_Agg + score_KM) / 2
         return np.round(score_avg, self.precision)
@@ -401,7 +431,7 @@ class DREAMER():
                 runTable[j+1][10] = totalQuality
     
             currRun = i+1
-            path = self.runsPath+str(currRun)+".csv"
+            path = self.runs_path+str(currRun)+".csv"
             np.savetxt(path, runTable, fmt="%s", delimiter=",")
             
             #find best sub-table
@@ -672,9 +702,8 @@ class DREAMER():
     def smap(self, f):
         return f()
     
-    #multiprocessing pooling
+    #DREAMER multiprocessing pooling
     def runDREAMER(self):
-    
         cores = self.R #number of CPU cores for multiprocessing
         f_array = np.empty(cores, dtype=object)
         
@@ -687,26 +716,30 @@ class DREAMER():
         #RunsArray as a global variable
         global runsArray
         runsArray = res
+    
+    #DREAMER process
+    def run(self):
+        print('Read json configuration.')
+        start = timeit.default_timer()  #Start timer
+        print('DREAMER started for user ', self.folder_name,' on ',self.R,' cores in parallel.')
+        print(f'Cleansing dataset {self.file_name}.')
         
+        self.runDREAMER()
+        
+        stop = timeit.default_timer()   #Stop timer
+        file = open(self.timeFile, 'w')
+        duration = (stop - start) / 60
+        duration = round(duration,2)
+        print('DREAMER process finished successfully.')
+        print('Running time is ',duration, ' minutes.')
+        file.write('Running time (minutes): ')
+        file.write(str(duration))
+        file.close()
+        
+        print('Creating cleansed data and reports files.')
         self.printFileRunsWeights()  #print subtables accuracies runs into files 
         self.learnWeights() #learn weights and print average weights
         self.printSubtableFilesRuns() #print subtables runs into files    
         self.printMasterTableFile()
-
-if __name__ == '__main__':
-    
-    dreamer = DREAMER()
-    print('DREAMER started for user ',dreamer.folder_name,'.')
-    start = timeit.default_timer()  #Start timer
-    print('Read json configuration.')
-    print('Random exploration started.')
-    dreamer.runDREAMER()  #main DREAMER process
-    stop = timeit.default_timer()   #Stop timer
-    file = open(dreamer.timeFile, 'w')
-    duration = (stop - start) / 60
-    duration = round(duration,2)
-    print('DREAMER process finished successfully.')
-    print('Running time is ',duration, ' minutes.')
-    file.write('Running time (minutes): ')
-    file.write(str(duration))
-    file.close()
+        print('All files were generated successfully.')
+        
