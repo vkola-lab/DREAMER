@@ -2,7 +2,7 @@
 """
 Created on May 15, 2023
 
-@author: meaha
+@author: Meysam Ahangaran
 """
 from DREAMER import DREAMER
 
