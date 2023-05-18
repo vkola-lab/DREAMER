@@ -8,7 +8,7 @@ a cleansed dataset with high precision in supervised and unsupervised ML tasks.
 
 # Install DREAMER
 To install the DREAMER use the follolwing command:
-pip install git+https://github.com/vkola-lab/DREAMER.git
+> pip install git+https://github.com/vkola-lab/DREAMER.git
 
 # How to run DREAMER?
 The input dataset of DREAMER should be numerical in CSV tabular format and consists of one class (label) column.
