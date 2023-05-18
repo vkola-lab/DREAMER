@@ -5,9 +5,9 @@
     },
     
     "data_settings": {
-      "file_name": "wdbc.csv", 
+      "file_name": "iris.csv", 
 	  "target_column": "target",
-	  "folder_name": "user1"
+	  "output_folder": "user1"
     },
     
     "free_params": {
