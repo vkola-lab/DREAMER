@@ -6,6 +6,10 @@ You can determine the number of CPU cores in the DREAMER json configuration to r
 DREAMER excludes some unimportant correlated features as well as some noisy records from the master dataset to obtain
 a cleansed dataset with high precision in supervised and unsupervised ML tasks.
 
+# Install DREAMER
+To install the DREAMER use the follolwing command:
+pip install git+https://github.com/vkola-lab/DREAMER.git
+
 # How to run DREAMER?
 The input dataset of DREAMER should be numerical in CSV tabular format and consists of one class (label) column.
 These are steps for running DREAMER on your master dataset:
