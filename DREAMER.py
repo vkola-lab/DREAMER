@@ -54,7 +54,7 @@ class DREAMER():
     R = search_space['cores']   #number of cores for multiprocessing (0 for getting all cores)
     file_name = data_settings['file_name']   #main CSV file including empty cells
     target_column = data_settings['target_column']  #target column of the dataset for supervised learning
-    folder_name = data_settings['folder_name']  #name of unique folder of user
+    folder_name = data_settings['output_folder']  #name of output folder
     fileNameLength = len(file_name)
     fileName_no_extension = file_name[0:fileNameLength-4]    #file name without .csv extension
     main_path = "./"+folder_name+"/"+fileName_no_extension #main path for current dataset
