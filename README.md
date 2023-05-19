@@ -18,7 +18,10 @@ These are steps for running DREAMER on your master dataset:
 1. Put the CSV dataset within your root folder. 
 2. Setup json file parameters and put it within the root folder. The json file name must be **"DREAMER_Config.json"**.
 3. Run DREAMER process using your own main file by calling **dreamer.run()** function after creating DREAMER object "dreamer"
-(see "DREAMER_Run.py" file in the tests folder).
+with these three simple lines code (see "DREAMER_Run.py" file in the tests folder):      
+`from DREAMER import DREAMER`    
+`dreamer = DREAMER()`      
+`dreamer.run()`             
 4. The results inculding cleansed version of the master dataset and some statistical reports will be generated in the output
 folder.
 
