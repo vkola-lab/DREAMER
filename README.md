@@ -11,7 +11,7 @@ To install the DREAMER use the follolwing command:
 
 `pip install git+https://github.com/vkola-lab/DREAMER.git`    
      
-The dependency package for running DREAMER are:    
+The dependency packages for running DREAMER are:    
         ***- pandas (1.5)     
 	- numpy (1.23)      
 	- scikit-learn (1.2)    
