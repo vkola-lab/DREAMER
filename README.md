@@ -63,6 +63,6 @@ value of floating numbers to show the statistical values in the reports. The val
 
 ## DREAMER outputs
 In the output folder you will see five different output files which shows the cleansed version of the master dataset and some statistical
-measures of both master and cleansed datasets for comparison. You can also find a file namely "Time.txt" that shows the total running time
+measures of both master and cleansed datasets for comparison. You can also find a file namely **"Time.txt"** that shows the total running time
 of the DREAMER process in minutes. The file **"CleanData.csv"** is the final cleansed version of the original dataset which includes class column
 and some of the rows and columns from master dataset. The indexes of selected rows are demonstrated in the first column of this file.
