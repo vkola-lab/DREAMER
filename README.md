@@ -1,10 +1,5 @@
 ## DREAMER: Data REAdiness for MachinE learning Research
-**DREAMER** is a computational framework to assess readiness level of datasets for machine learning pipeline.
-It uses both supervised and unsupervised approaches with random exploration method for data readiness evaluation.
-The DREAMER framework uses Python Pooling Multi-Processing method to obtain most benefit of computational resources.
-You can determine the number of CPU cores in the DREAMER json configuration to run in parallel during DREAMER process.
-DREAMER excludes some unimportant correlated features as well as some noisy records from the master dataset to obtain
-a cleansed dataset with high precision in supervised and unsupervised ML tasks.
+**DREAMER** is a computational framework to assess readiness level of datasets for machine learning. It uses Python Pooling Multi-Processing method to maximize the benefit from existing computational resources. One can determine the number of CPU cores in the DREAMER json configuration to run a parallel job.
 
 ## Install DREAMER
 To install the DREAMER use the follolwing command: 
