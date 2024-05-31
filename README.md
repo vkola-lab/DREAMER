@@ -65,6 +65,6 @@ and some of the rows and columns from master dataset. The indexes of selected ro
 ## Web development framework
 We have developed **DREAMER**, a web-based tool accessible at https://dreamer.bu.edu, which facilitates users in registering on our platform, uploading their datasets, assessing their Machine Learning (ML) readiness, and obtaining cleansed datasets as outputs. The intuitive user interface accommodates the uploading of a master CSV dataset. Upon initiation, this action initiates an Application Programming Interface (API) connection, generating a JSON configuration file containing DREAMER parameters pertinent to the master dataset, subsequently transmitting it to our server. The backend system then assumes control, executing the core DREAMER processes on the dataset, resulting in a sanitized CSV file accompanied by comprehensive reports and statistical analyses. Upon conclusion of the DREAMER procedures, users are promptly notified via email and granted access to download the complete package, inclusive of the cleansed dataset, reports, and data readiness metrics. The overal architecture of the DREAMER web framework is presented below:
 
-
+<img src = "https://github.com/vkola-lab/DREAMER/blob/main/Web_framework.svg">
 
 
