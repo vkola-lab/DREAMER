@@ -61,3 +61,10 @@ In the output folder you will see five different output files which shows the cl
 measures of both master and cleansed datasets for comparison. You can also find a file namely **"Time.txt"** that shows the total running time
 of the DREAMER process in minutes. The file **"CleanData.csv"** is the final cleansed version of the original dataset which includes class column
 and some of the rows and columns from master dataset. The indexes of selected rows are demonstrated in the first column of this file.
+
+## Web development framework
+We have developed **DREAMER**, a web-based tool accessible at https://dreamer.bu.edu, which facilitates users in registering on our platform, uploading their datasets, assessing their Machine Learning (ML) readiness, and obtaining cleansed datasets as outputs. The intuitive user interface accommodates the uploading of a master CSV dataset. Upon initiation, this action initiates an Application Programming Interface (API) connection, generating a JSON configuration file containing DREAMER parameters pertinent to the master dataset, subsequently transmitting it to our server. The backend system then assumes control, executing the core DREAMER processes on the dataset, resulting in a sanitized CSV file accompanied by comprehensive reports and statistical analyses. Upon conclusion of the DREAMER procedures, users are promptly notified via email and granted access to download the complete package, inclusive of the cleansed dataset, reports, and data readiness metrics. The overal architecture of the DREAMER web framework is presented below:
+
+
+
+
