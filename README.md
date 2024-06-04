@@ -1,4 +1,7 @@
 # DREAMER: Data REAdiness for MachinE learning Research
+
+This work is published in _BMC Medical Informatics and Decision Making_ (https://doi.org/10.1186/s12911-024-02544-w).
+
 **DREAMER** is a computational framework to assess readiness level of datasets for machine learning. It uses Python Pooling Multi-Processing method to maximize the benefit from existing computational resources. One can determine the number of CPU cores in the DREAMER json configuration to run a parallel job.
 
 ## Install DREAMER
