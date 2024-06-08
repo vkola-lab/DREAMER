@@ -70,4 +70,18 @@ We have developed **DREAMER**, a web-based tool accessible at https://dreamer.bu
 
 <img src = "https://github.com/vkola-lab/DREAMER/blob/main/Web_framework.svg">
 
-
+# Reference
+For more information read the DREAMER article here:
+https://link.springer.com/article/10.1186/s12911-024-02544-w
+```bash
+@article{ahangaran2024dreamer,
+  title={DREAMER: a computational framework to evaluate readiness of datasets for machine learning},
+  author={Ahangaran, Meysam and Zhu, Hanzhi and Li, Ruihui and Yin, Lingkai and Jang, Joseph and Chaudhry, Arnav P and Farrer, Lindsay A and Au, Rhoda and Kolachalama, Vijaya B},
+  journal={BMC Medical Informatics and Decision Making},
+  volume={24},
+  number={1},
+  pages={152},
+  year={2024},
+  publisher={Springer}
+}
+```
